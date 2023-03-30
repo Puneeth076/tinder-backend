@@ -1,47 +1,46 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const Cards = require("./dbcards");
-
-
-
+const cors = require("cors");
 const app = express();
+
+app.use(express.json());
+app.use(cors());
 const port = process.env.PORT || 8001;
-const connection_url = "mongodb+srv://PUNEETH:Puneeth076@cluster0.klwlxme.mongodb.net/tinderdb?retryWrites=true&w=majority";
+const connection_url =
+  "mongodb+srv://Puneeth:BygGxvXCvYiXUDeB@cluster0.agasheg.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.connect(connection_url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  useFindAndModify: true,
 });
 
-
+mongoose.set("strictQuery", true);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello welcome to world of backend");
 });
 
 app.post("/tinder/card", (req, res) => {
-  const dbCards = req.body;
-  Cards.create(dbCards, (err, data) => {
+  const dbcards = req.body;
+  Cards.create(dbcards, (err, data) => {
     if (err) {
       res.status(500).send(err);
     } else {
       res.status(201).send(data);
     }
-    mongoose.connection.close()
   });
 });
 
 app.get("/tinder/card", (req, res) => {
- Cards.find((err,data) => {
-    if(err){
-        res.status(500).send(err);
+  Cards.find((err, data) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(data);
     }
-    else{
-        res.status(200).send(data);
-    }
- })
+  });
 });
 
 app.listen(port, () => console.log(`listening on ${port}`));
