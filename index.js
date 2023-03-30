@@ -16,7 +16,7 @@ mongoose.connect(connection_url, {
   useCreateIndex: true,
 });
 
-mongoose.set("strictQuery", true);
+mongoose.set("strictQuery", false);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello welcome to world of backend");
